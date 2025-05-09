@@ -163,7 +163,7 @@ class DriveFolderCreateView(APIView):
             name = serializer.validated_data['name']
             parent_folder_id = serializer.validated_data.get('parent_folder_id')
             gdrive_manager = GDriveManager()
-            parent_id = parent_folder_id if parent_folder_id else 'root'
+            parent_id = parent_folder_id if parent_folder_id else '1zTvCh76LuRH52fqHthcbz3D1fhATbRA6'
             # If parent_folder_id is provided, check existence
             if parent_folder_id and not gdrive_manager.check_folder_exists(parent_folder_id):
                 return Response({"error": f"Parent folder with id '{parent_folder_id}' does not exist on Google Drive."}, status=status.HTTP_400_BAD_REQUEST)
@@ -182,7 +182,12 @@ class DriveFolderCreateView(APIView):
                 }
             )
             
-            return Response({'Il': folder_data['id']}, status=status.HTTP_201_CREATED)
+            return Response({
+                'message': 'Folder created successfully',
+                'folder_id': folder_data['id'],
+                'folder_name': name,
+                'parent_folder_id': parent_folder_id
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
