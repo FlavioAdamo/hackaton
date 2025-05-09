@@ -1,0 +1,24 @@
+meta {
+  name: scorings-request
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8000/api/scorings/request/
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Api-Key LC3y57UR.qmdmsBgs1OG7VFVWDb3pSNMvWWeiAWC8
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "cv_url": "https://storage.googleapis.com/nexthire/cv/1744365716585-CV_Gianluca_Andretta_EN_25.pdf",
+    "job_application_id": "user123",
+    "job_description": "We're for a react developer, experience in react native"
+  }
+}

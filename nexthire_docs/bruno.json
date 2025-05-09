@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "nexthire_docs",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,15 @@
+meta {
+  name: auth-check
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8000/api/protected/
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Api-Key LC3y57UR.qmdmsBgs1OG7VFVWDb3pSNMvWWeiAWC8 
+}
