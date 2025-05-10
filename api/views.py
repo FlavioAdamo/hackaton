@@ -5,9 +5,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from django.shortcuts import get_object_or_404
 import logging
+from datetime import datetime
+import requests
+
+from rest_framework import viewsets
 
 from api.gdrive_manager import GDriveManager
 from api.serializers import (
+    CalendarEventSerializer,
     FileUploadSerializer,
     DriveFolderSerializer,
     DriveFolderTreeSerializer,
@@ -17,6 +22,8 @@ from api.models import DriveFolder, DriveFile
 from documents.models import DocumentContent, DocumentChunk, DocumentTask
 from documents.views import create_embedding
 from services.generate.generate import generate_documents_from_file, get_blob_dict
+
+from api.models import CalendarEvent
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -116,16 +123,66 @@ class GoogleDriveUploadView(APIView):
                         embedding=create_embedding(document_chunk.page_content),
                     )
 
-                DocumentTask.objects.create(
-                    document=document_content,
-                    scheduled_at=event.get("scheduled_at"),
-                    due_at=event.get("due_at"),
-                    recipient_email_list=event.get("recipient_email_list"),
-                    sender_email=event.get("sender_email"),
-                    subject=event.get("subject"),
-                    body=event.get("body"),
-                    location=event.get("location"),
-                )
+                if event:
+                    DocumentTask.objects.create(
+                        document=document_content,
+                        scheduled_at=event.get("scheduled_at"),
+                        due_at=event.get("due_at"),
+                        recipient_email_list=event.get("recipient_email_list"),
+                        sender_email=event.get("sender_email"),
+                        subject=event.get("subject"),
+                        body=event.get("body"),
+                        location=event.get("location"),
+                    )
+
+                    # Send event data to n8n webhook
+                    webhook_data = [
+                        {
+                            "sender": event.get("sender_email"),
+                            "recipient_list": event.get("recipient_email_list", []),
+                            "description": event.get("body", ""),
+                            "title": event.get("subject", ""),
+                            "doc_id": str(
+                                document_content.id
+                            ),  # Using document content ID as doc_id
+                            "notice_days": 7,  # Default notice days
+                            "due_at": event.get("due_at"),
+                        }
+                    ]
+
+                    try:
+                        response = requests.post(
+                            "https://hackaton2ed.app.n8n.cloud/webhook-test/invoice_upload",
+                            json=webhook_data,
+                        )
+                        response.raise_for_status()
+                        logger.info(
+                            f"Successfully sent event data to n8n webhook: {response.status_code}"
+                        )
+                    except Exception as e:
+                        logger.error(
+                            f"Failed to send event data to n8n webhook: {str(e)}"
+                        )
+
+                    # Parse ISO dates to YYYY-MM-DD format
+                    start_date = None
+                    end_date = None
+                    if event.get("scheduled_at"):
+                        start_date = datetime.fromisoformat(
+                            event.get("scheduled_at").replace("Z", "+00:00")
+                        ).date()
+                    if event.get("due_at"):
+                        end_date = datetime.fromisoformat(
+                            event.get("due_at").replace("Z", "+00:00")
+                        ).date()
+
+                    CalendarEvent.objects.create(
+                        title=event.get("subject"),
+                        description=event.get("body"),
+                        start_date=start_date,
+                        end_date=end_date,
+                    )
+
                 # Custom response with message and path
                 return Response(
                     {
@@ -273,3 +330,27 @@ class ListFilesView(APIView):
             return Response({"files": files}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CalendarEventViewSet(viewsets.ModelViewSet):
+    queryset = CalendarEvent.objects.all()  # Fetch all calendar events
+    serializer_class = CalendarEventSerializer
+    permission_classes = [IsAuthenticated]  # Require authentication for all actions
+
+    def get_queryset(self):
+        """
+        Optionally filters the queryset by event type or date range.
+        """
+        queryset = super().get_queryset()
+        event_type = self.request.query_params.get("event_type")
+        start_date = self.request.query_params.get("start_date")
+        end_date = self.request.query_params.get("end_date")
+
+        if event_type:
+            queryset = queryset.filter(event_type=event_type)
+        if start_date:
+            queryset = queryset.filter(start_date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(end_date__lte=end_date)
+
+        return queryset

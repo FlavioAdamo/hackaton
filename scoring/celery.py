@@ -13,3 +13,11 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
+def check_for_reminder(file_content):
+    """
+    Check if the file content contains a reminder.
+    """
+    # Implement your logic to check for reminders in the file content
+    # For example, you can look for specific keywords or patterns
+    return "reminder" in file_content.lower()

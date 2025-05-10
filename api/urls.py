@@ -2,6 +2,7 @@ from django.urls import path
 
 from documents.api.views import ChatAPIView, DocumentSearchAPIView
 from .views import (
+    CalendarEventViewSet,
     HealthCheckView,
     JWTProtectedView,
     GoogleDriveUploadView,
@@ -16,10 +17,17 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework.routers import DefaultRouter
+
+
+from django.urls import include
 
 app_name = "api"
+router = DefaultRouter()
+router.register(r"calendar", CalendarEventViewSet, basename="calendarevent")
 
 urlpatterns = [
+    path("", include(router.urls)),  # Include all API routes
     path("health/", HealthCheckView.as_view(), name="health_check"),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

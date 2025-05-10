@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from documents.api.serializers import SimpleDocumentTaskSerializer
 from .models import DriveFolder, DriveFile
+from .models import CalendarEvent
 from documents.models import DocumentContent
 
 
@@ -92,3 +93,9 @@ class DriveFolderTreeSerializer(serializers.ModelSerializer):
 class SearchSerializer(serializers.Serializer):
     file = DriveFileSerializer(read_only=True)
     message = serializers.CharField(read_only=True)
+
+
+class CalendarEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CalendarEvent
+        fields = "__all__"

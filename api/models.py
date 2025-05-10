@@ -31,3 +31,33 @@ class DriveFile(models.Model):
         ordering = ['name']
 
 
+
+from datetime import timedelta
+
+from django.db import models
+
+# Create your models here.
+from django.db import models
+
+class CalendarEvent(models.Model):
+    EVENT_TYPE_CHOICES = [
+        ('REMINDER', 'Reminder')
+    ]
+
+    title = models.CharField(max_length=255, help_text="Title of the event")
+    description = models.TextField(blank=True, null=True, help_text="Additional details about the event")
+    start_date = models.DateField(help_text="Start date of the event")
+    end_date = models.DateField(blank=True, null=True, help_text="End date of the event (optional)")
+    is_full_day = models.BooleanField(default=True, help_text="Indicates if the event spans the entire day")
+    event_type = models.CharField(
+        max_length=20,
+        choices=EVENT_TYPE_CHOICES,
+        default='REMINDER',
+        help_text="Type of the event (holiday, meeting, etc.)"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the event was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the event was last updated")
+    
+
+
+
