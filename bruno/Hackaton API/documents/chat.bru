@@ -1,0 +1,23 @@
+meta {
+  name: chat
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}api/documents/chat/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {"query":"scrivimi una brevissima poesia"}
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  file: @file(/Users/gnlca/Downloads/1306774590979-12247977353-ticket.pdf)
+}

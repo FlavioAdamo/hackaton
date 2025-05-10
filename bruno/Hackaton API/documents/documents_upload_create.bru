@@ -1,0 +1,30 @@
+meta {
+  name: documents_upload_create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}api/documents/upload/
+  body: multipartForm
+  auth: inherit
+}
+
+body:json {
+  {
+    "file": [],
+    "folder_id": "",
+    "folder_name": "",
+    "comment": "",
+    "model_name": "",
+    "object_id": ""
+  }
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  file: @file(/Users/gnlca/Downloads/1306774590979-12247977353-ticket.pdf)
+}

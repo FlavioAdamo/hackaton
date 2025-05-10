@@ -1,0 +1,15 @@
+meta {
+  name: drive_folders_list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/drive/folders/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

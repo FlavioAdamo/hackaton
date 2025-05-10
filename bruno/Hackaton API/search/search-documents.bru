@@ -1,0 +1,17 @@
+meta {
+  name: search-documents
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}api/documents/search/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "query": "hackaton"
+  }
+}

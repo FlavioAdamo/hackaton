@@ -1,0 +1,18 @@
+Gianluca Andretta can be reached at +39 3489033537 and gianluca@ndrt.it. His website is ndrt.it and his GitHub profile is github.com/gnlca.
+
+His work experience includes:
+From 2023 to the present, he has been a Full-stack Developer at NDRT (Freelancer). In this role, he develops web applications, dashboards, and management tools using Next.js and Django. He also consults on system integration for process automation and optimization, and provides consultancy and training to companies on React-based projects.
+
+From 2022 to 2023, he worked as a Front-end Developer at Unitiva. He developed the React application "Frame Advisor" for Luxottica, which featured user profiling for personalized consultations and virtual try-on of frames with augmented reality. Key achievements include implementing accessible components and reusable hooks, and optimizing performance by minimizing unnecessary re-renders. He also built a management tool for Fedrigoni for price campaign analysis, where he designed data interfaces for backend communication and created a spreadsheet-like user experience through caching and optimistic updates.
+
+From 2019 to 2022, Gianluca was a Developer at Albert!. He developed a system for querying and managing data from and to institutional websites. He also created a program for receiving invoices from the Italian Revenue Agency (AdE) with automatic import, including accounting and VAT entries into a management system.
+
+Regarding his education, Gianluca holds a Bachelor's Degree in Computer, Biomedical, and Telecommunications Engineering. His thesis was on the "Optimization of an iterative reconstruction algorithm based on neural networks for CT image reconstruction." He also has a Cambridge Assessment B2 English level.
+
+His personal projects include:
+codeishot.com, a platform for developers to manage and share code snippets, built with Next.js and Django, which receives approximately 10k monthly visitors.
+Servito, a dashboard for server monitoring with status info built with Next.js, deployable as a Docker image.
+
+The technologies he uses include proficiency in TypeScript, Python, and C++. He is experienced with libraries and frameworks such as React, RTK Query, Next.js, and Django. He is also familiar with tools like Git, Docker, and Figma.
+
+He authorizes the use of his personal data in accordance with GDPR 679/16 - "European regulation on the protection of personal data".

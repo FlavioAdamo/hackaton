@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i+y%1)@-sj@lggz%mm#)78*_l+*3j*@*o0^ws4a@@q6nengivo'
+SECRET_KEY = "django-insecure-i+y%1)@-sj@lggz%mm#)78*_l+*3j*@*o0^ws4a@@q6nengivo"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,66 +32,66 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Third party apps
-    'rest_framework',
-    'rest_framework_api_key',
-    'drf_spectacular',
-    'corsheaders',  # <--- AGGIUNTO QUI
+    "rest_framework",
+    "rest_framework_api_key",
+    "drf_spectacular",
+    "corsheaders",  # <--- AGGIUNTO QUI
     # Local apps
-    'api',
-    'rest_framework_simplejwt',
-    ]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # <--- AGGIUNTO QUI
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "api",
+    "rest_framework_simplejwt",
+    "documents",
 ]
 
-ROOT_URLCONF = 'scoring.urls'
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # <--- AGGIUNTO QUI
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "scoring.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'scoring.wsgi.application'
+WSGI_APPLICATION = "scoring.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'DB_NAME'),
-        'USER': os.environ.get('POSTGRES_USER', 'DB_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'DB_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "DB_NAME"),
+        "USER": os.environ.get("POSTGRES_USER", "DB_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "DB_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
@@ -101,16 +101,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -118,9 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -130,78 +130,80 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # REST Framework settings
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework_api_key.permissions.HasAPIKey',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework_api_key.permissions.HasAPIKey",
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # drf-spectacular settings
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Scoring API',
-    'DESCRIPTION': 'API per la gestione dello scoring, autenticazione tramite API Key o JWT.',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SCHEMA_PATH_PREFIX': '/api/',
-    'COMPONENT_SPLIT_REQUEST': True,
-    'SECURITY': [
-        {'ApiKeyAuth': []},
-        {'BearerAuth': []},
+    "TITLE": "Scoring API",
+    "DESCRIPTION": "API per la gestione dello scoring, autenticazione tramite API Key o JWT.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SECURITY": [
+        {"ApiKeyAuth": []},
+        {"BearerAuth": []},
     ],
-    'AUTHENTICATION_WHITELIST': [
-        'rest_framework_api_key.permissions.HasAPIKey',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "AUTHENTICATION_WHITELIST": [
+        "rest_framework_api_key.permissions.HasAPIKey",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    'EXTENSIONS_INFO': {
-        'x-logo': {
-            'url': 'https://yourdomain.com/logo.png',
-            'altText': 'Logo',
+    "EXTENSIONS_INFO": {
+        "x-logo": {
+            "url": "https://yourdomain.com/logo.png",
+            "altText": "Logo",
         }
     },
 }
 
 # Celery Configuration
 # In Docker environment, use the service name 'redis' instead of 'localhost'
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
 # Google Cloud Storage settings
-GOOGLE_CLOUD_PROJECT_ID = os.environ.get('GOOGLE_CLOUD_PROJECT_ID')
-GOOGLE_CLOUD_CLIENT_EMAIL = os.environ.get('GOOGLE_CLOUD_CLIENT_EMAIL')
-GOOGLE_CLOUD_PRIVATE_KEY = os.environ.get('GOOGLE_CLOUD_PRIVATE_KEY')
-GOOGLE_CLOUD_PRIVATE_KEY = GOOGLE_CLOUD_PRIVATE_KEY.replace('\\n', '\n') if GOOGLE_CLOUD_PRIVATE_KEY else None
+GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
+GOOGLE_CLOUD_CLIENT_EMAIL = os.environ.get("GOOGLE_CLOUD_CLIENT_EMAIL")
+GOOGLE_CLOUD_PRIVATE_KEY = os.environ.get("GOOGLE_CLOUD_PRIVATE_KEY")
+GOOGLE_CLOUD_PRIVATE_KEY = (
+    GOOGLE_CLOUD_PRIVATE_KEY.replace("\\n", "\n") if GOOGLE_CLOUD_PRIVATE_KEY else None
+)
 
 # Webhook settings
-BACKEND_CALLBACK_URL = os.environ.get('BACKEND_CALLBACK_URL', '')
-WEBHOOK_API_KEY = os.environ.get('WEBHOOK_API_KEY', '')
+BACKEND_CALLBACK_URL = os.environ.get("BACKEND_CALLBACK_URL", "")
+WEBHOOK_API_KEY = os.environ.get("WEBHOOK_API_KEY", "")
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': "TEST",
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3000000),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "TEST",
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 
@@ -212,44 +214,39 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
 
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'api-key',
-    'x-api-key',
-    'access-control-allow-origin',
-    'access-control-allow-headers',
-    'access-control-allow-methods',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "api-key",
+    "x-api-key",
+    "access-control-allow-origin",
+    "access-control-allow-headers",
+    "access-control-allow-methods",
 ]
 
 # Ensure OPTIONS requests are handled correctly
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.ngrok-free.app',
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:3000'
+    "https://*.ngrok-free.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
 ]
 
 # Add CORS_EXPOSE_HEADERS to expose necessary headers
-CORS_EXPOSE_HEADERS = [
-    'Content-Type',
-    'X-CSRFToken',
-    'Authorization',
-    'X-API-Key'
-]
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken", "Authorization", "X-API-Key"]
