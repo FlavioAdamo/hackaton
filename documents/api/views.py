@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.serializers import DriveFileSerializer
+from api.serializers import DriveFileSerializer, SearchSerializer
 from documents.views import search_similar_chunks
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -52,6 +52,10 @@ class DocumentSearchAPIView(APIView):
         # similar_documents = DocumentContent.objects.filter(id__in=document_ids)
 
         # print(similar_documents)
+
+        res = {"file": drive_files[0], "message": "contenuto messaggio ai"}
+        serializer = SearchSerializer(instance=res)
+        return Response(serializer.data)
 
         drive_files = DriveFileSerializer(drive_files, many=True).data
 

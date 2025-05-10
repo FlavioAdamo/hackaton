@@ -1,14 +1,17 @@
+import json
 import os
-from typing import List, Tuple, TypedDict, Optional
+from typing import List, Optional, Tuple, TypedDict
 from langchain.schema import Document
-
+from pydantic import BaseModel
+from services.generate.prompts import extract_content_prompt
 import google.generativeai as genai
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import magic
 from dotenv import load_dotenv
 from google.generativeai.types import HarmBlockThreshold, HarmCategory
 
-from .schemas import GeminiInputSchema, EventSchema
+from services.generate.schemas import DocumentContentExtractionSchema
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -50,32 +53,47 @@ def get_blob_dict(file_blob):
     return file_data
 
 
-def extract_text_from_file(file_data: BlobDict, gemini_input: GeminiInputSchema):
+def extract_text_from_file(
+    file_data: BlobDict, prompt: str, schema: Optional[BaseModel] = None
+):
     # Choose a Gemini model.
     model = genai.GenerativeModel(model_name="gemini-2.5-pro-exp-03-25")
 
+    # Open and read the PDF file
+    # Create a Part object with the file data and mime type
+
     # Prompt the model with text and the file data
+    gen_config = genai.types.GenerationConfig()
+    if schema:
+        gen_config.response_mime_type = "application/json"
+        gen_config.response_schema = schema
+
     response = model.generate_content(
-        [gemini_input.content, file_data],
+        [prompt, file_data],
         safety_settings={
             HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
             HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
         },
+        generation_config=gen_config,
     )
-
+    print(response.text)
     return response.text
 
     # sample_file = upload_genai_file("CV_Gianluca_Andretta_EN_25.pdf")
 
 
-def generate_documents_from_file(
-    file_data: BlobDict, event: Optional[EventSchema] = None
-) -> Tuple[List[Document], str]:
-    gemini_input = GeminiInputSchema(event=event)
-    text = extract_text_from_file(file_data, gemini_input)
-    if text:
+def generate_documents_from_file(file_data: BlobDict) -> Tuple[List[Document], str]:
+    # file_data = get_blob_dict(get_file_blob("IMG_3256.jpeg"))
+    # file_data = get_blob_dict(get_file_blob("CV_Gianluca_Andretta_EN_25.pdf"))
+
+    res = extract_text_from_file(
+        file_data, extract_content_prompt, DocumentContentExtractionSchema
+    )
+    res = json.loads(res)
+    content = res.get("content")
+    if content:
         print("Interpreted Image:")
-        print(text)
+        print(content)
     else:
         print("Failed to extract text from the image.")
 
@@ -91,27 +109,12 @@ def generate_documents_from_file(
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=150, chunk_overlap=30
     )  # ["\n\n", "\n", " ", ""] 65,450
-    documents = text_splitter.create_documents([text])
+    documents = text_splitter.create_documents([content])
     print(documents)
-    return documents, text
+    return documents, res
 
 
-def generate_llm_response(prompt: str, event: Optional[EventSchema] = None) -> str:
+def generate_llm_response(prompt: str) -> str:
     model = genai.GenerativeModel(model_name="gemini-2.5-flash-preview-04-17")
-
-    if event:
-        # If event is provided, create a structured prompt
-        gemini_input = GeminiInputSchema(content=prompt, event=event)
-        response = model.generate_content(
-            [
-                "Given the following event details and prompt, provide a response:",
-                f"Event: {event.model_dump_json(exclude_none=True)}",
-                f"Prompt: {prompt}",
-            ]
-        )
-    else:
-        response = model.generate_content(prompt)
-
-    # Clean up newlines in the response
-    cleaned_response = response.text.replace("\\n", " ").strip()
-    return cleaned_response
+    response = model.generate_content(prompt)
+    return response.text

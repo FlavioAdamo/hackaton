@@ -5,8 +5,8 @@ from api.models import DriveFile
 
 # Create your models here.
 class DocumentContent(models.Model):
-    drive_file = models.ForeignKey(
-        DriveFile, on_delete=models.CASCADE, related_name="document_contents"
+    drive_file = models.OneToOneField(
+        DriveFile, on_delete=models.CASCADE, related_name="document_content"
     )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

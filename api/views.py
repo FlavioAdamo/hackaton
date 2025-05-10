@@ -14,7 +14,7 @@ from api.serializers import (
     CreateFolderSerializer,
 )
 from api.models import DriveFolder, DriveFile
-from documents.models import DocumentContent, DocumentChunk
+from documents.models import DocumentContent, DocumentChunk, DocumentTask
 from documents.views import create_embedding
 from services.generate.generate import generate_documents_from_file, get_blob_dict
 
@@ -54,7 +54,9 @@ class GoogleDriveUploadView(APIView):
         if serializer.is_valid():
             file = serializer.validated_data["file"]
             blob_dict = get_blob_dict(file.read())
-            document_chunks, text = generate_documents_from_file(blob_dict)
+            document_chunks, res = generate_documents_from_file(blob_dict)
+            event = res.get("event")
+            text = res.get("content")
 
             folder_id = serializer.validated_data.get("folder_id")
 
@@ -114,6 +116,16 @@ class GoogleDriveUploadView(APIView):
                         embedding=create_embedding(document_chunk.page_content),
                     )
 
+                DocumentTask.objects.create(
+                    document=document_content,
+                    scheduled_at=event.get("scheduled_at"),
+                    due_at=event.get("due_at"),
+                    recipient_email_list=event.get("recipient_email_list"),
+                    sender_email=event.get("sender_email"),
+                    subject=event.get("subject"),
+                    body=event.get("body"),
+                    location=event.get("location"),
+                )
                 # Custom response with message and path
                 return Response(
                     {
