@@ -10,12 +10,13 @@ from rest_framework import generics, mixins, viewsets
 
 from api.gdrive_manager import GDriveManager
 from api.serializers import (
+    CalendarEventSerializer,
     FileUploadSerializer, 
     DriveFolderSerializer, 
     DriveFolderTreeSerializer,
     CreateFolderSerializer
 )
-from api.models import DriveFolder, DriveFile
+from api.models import CalendarEvent, DriveFolder, DriveFile
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -34,8 +35,6 @@ class HealthCheckView(APIView):
             }, 
             status=status.HTTP_200_OK
         )
-
-
 
 class GoogleDriveUploadView(APIView):
     permission_classes = [IsAuthenticated]
@@ -209,3 +208,27 @@ class ListFilesView(APIView):
             return Response({'files': files}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class CalendarEventViewSet(viewsets.ModelViewSet):
+    queryset = CalendarEvent.objects.all()  # Fetch all calendar events
+    serializer_class = CalendarEventSerializer
+    permission_classes = [IsAuthenticated]  # Require authentication for all actions
+
+    def get_queryset(self):
+        """
+        Optionally filters the queryset by event type or date range.
+        """
+        queryset = super().get_queryset()
+        event_type = self.request.query_params.get('event_type')
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+
+        if event_type:
+            queryset = queryset.filter(event_type=event_type)
+        if start_date:
+            queryset = queryset.filter(start_date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(end_date__lte=end_date)
+
+        return queryset

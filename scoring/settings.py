@@ -195,7 +195,7 @@ BACKEND_CALLBACK_URL = os.environ.get('BACKEND_CALLBACK_URL', '')
 WEBHOOK_API_KEY = os.environ.get('WEBHOOK_API_KEY', '')
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30000),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
